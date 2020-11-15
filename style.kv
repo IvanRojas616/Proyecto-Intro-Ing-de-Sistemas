@@ -1,0 +1,232 @@
+#:kivy 1.0.9
+<ListaI@IconLeftWidget>:
+    icon: "check-circle"
+<ListaD@IconRightWidget>:
+    icon: "bell-ring"
+<Anim@MDFloatLayout>:
+    size_hint_y:.6
+    pos_hint:{"center_y":1.8}
+    radius:[0,0,0,40]
+<CSesion@MDTextField>:
+    size_hint_x:.8
+    current_hint_text_color:1,1,1,0.8
+    color_mode: "custom"
+    line_color_focus:0,1,1,1
+<CRegistro@MDTextField>:
+    text_color:0,0,0,1
+    mode: "rectangle"
+    helper_text_mode: "on_focus"
+    size_hint_x:.5
+    required: True
+<VPopup@MDLabel>:
+    size_hint: 0.9, 0.2
+    pos_hint:{"center_x":.6,"center_y":.5}
+    theme_text_color : "Error"
+<Tag@MDLabel>:
+    halign:"center"
+    theme_text_color:"Custom"
+    font_style: "H5"
+    markup: True
+
+
+ScreenManager:
+    Principal:
+    consumidor:
+    emprendedor:
+    registro:
+<Principal>:
+    name: 'p'
+    orientation: "vertical"
+    Image:
+        id: imageView
+        source: 'cart.png'
+        size_hint_y:.3
+        size_hint_x:.3
+        pos_hint: {'center_x':0.5,'center_y':0.3}
+    MDRectangleFlatIconButton:
+        text: 'Emprendedor'
+        icon: 'cart'
+        pos_hint: {'center_x':0.5,'center_y':0.6}
+        on_press: root.manager.current = 'e'
+    MDRectangleFlatIconButton:
+        text: 'Consumidor'
+        icon:'account-group'
+        pos_hint: {'center_x':0.5,'center_y':0.5}
+        on_press: root.manager.current = 'c'
+    
+<consumidor>:
+    name: 'c'
+    orientation: "vertical"
+    MDIcon:
+        halign: "center"
+        icon: "map-marker-check-outline"
+        pos_hint: {'center_x':0.17,'center_y':0.93}
+    MDIcon:
+        halign: "center"
+        icon: "heart-multiple-outline"
+        pos_hint: {'center_x':0.828,'center_y':0.93}
+
+    Tag:
+        text: "Apoya al talento local"
+        halign:"center"
+        pos_hint: {'center_y':0.93}
+        theme_text_color:"Custom"
+        font_style: "H6"
+        markup: True
+        text_color: 1,0.35,0,1
+    ThreeLineAvatarIconListItem:
+        pos_hint: {'center_x':0.5,'center_y':0.8}
+        text: "Chocolates Sabor de mi Tierra"
+        secondary_text: "Gastronomía"
+        tertiary_text: "Encuentrános en @sabordemitierra en Instagram"
+        ListaI:
+        ListaD:
+    ThreeLineAvatarIconListItem:
+        pos_hint: {'center_x':0.5,'center_y':0.6}
+        text: "Comidas Rápidas Bob Burger"
+        secondary_text: "Gastronomía"
+        tertiary_text: "Domicilios al 3078546732"
+        ListaI:
+        ListaD:
+    ThreeLineAvatarIconListItem:
+        pos_hint: {'center_x':0.5,'center_y':0.4}
+        text: "Postres La Reina"
+        secondary_text: "Gastronomía"
+        tertiary_text: "Encuentrános en la Calle 53 #45 Sur"
+        ListaI:
+        ListaD:
+    ThreeLineAvatarIconListItem:
+        pos_hint: {'center_x':0.5,'center_y':0.2}
+        text: "Comida Típica Tolimense"
+        secondary_text: "Gastronomía"
+        tertiary_text: "Encuentrános en ctolima@gmail.com"
+        ListaI:
+        ListaD:
+    MDIconButton:
+        icon: "logout"
+        pos_hint: {"center_x": .1, "center_y": .07}
+        on_press: root.manager.current = 'p'
+    MDFloatingActionButtonSpeedDial:
+        pos_hint: {'center_x':0.02,'center_y':0.03}
+        data: app.data
+        hint_animation: True
+        rotation_root_button: True
+<emprendedor>:
+    name: 'e'
+    orientation: "vertical"
+    on_enter:
+        self.anim(back)
+        self.anim1(back1)
+        self.icons(icon)
+        self.text(label)
+        usr.text = ""
+        ps.text = ""
+    MDFloatLayout:
+        Anim:
+            id:back
+            canvas:
+                Color:
+                    rgb:(1,0.35,0,1)
+                Rectangle:
+                    size:self.size
+                    pos:self.pos
+        Anim:
+            id:back1
+            canvas:
+                Color:
+                    rgb:(1,0.35,0,1)
+                Ellipse:
+                    size:self.size
+                    pos:self.pos
+        MDIconButton:
+            id:icon
+            icon:"account-circle"
+            pos_hint:{"center_x":.5,"center_y":.8}
+            user_font_size:"60sp"
+            theme_text_color:"Custom"
+            text_color:0,0,0,1
+        Tag:
+            id:label
+            text:"Emprendamos Juntos"
+            pos_hint:{"center_y":.75}
+            text_color:0,0,0,1
+            opacity:0
+        CSesion:
+            id: usr
+            hint_text: "Usuario"
+            pos_hint:{"center_x":.5,"center_y":.46}
+        CSesion:
+            id:ps
+            hint_text: "Contraseña"
+            pos_hint:{"center_x":.5,"center_y":.34}
+            password:True
+        MDFillRoundFlatButton:
+            text: "Iniciar Sesión"
+            pos_hint:{"center_x":.5,"center_y":.2}
+            on_release:
+                app.root.current = "c" if app.validarSesion(ps,usr) else "e"
+                root.manager.transition.direction = "left"
+        MDFlatButton:
+            text: "Registrate"
+            pos_hint:{"center_x":.8,"center_y":.05}
+            on_release:root.manager.current = "r"
+                        
+<registro>:
+    name: 'r'
+    orientation: "vertical"
+    on_enter:
+        nombre.text = ""
+        passt.text = ""
+        info.text = ""
+        email.text = ""
+    Tag:
+        id:label
+        text:"Regístrate"
+        pos_hint:{"center_y":.95}
+        text_color:1,1,1,1
+        opacity:1
+    CRegistro:
+        id: nombre
+        hint_text: "Nombre de usuario"
+        pos_hint:{"center_x":.5,"center_y":.88}
+        helper_text: "Pon tu nombre de usuario."     
+    CRegistro:
+        id:passt
+        hint_text: "Contraseña"
+        helper_text: "Mínimo 8 carácteres."  
+        password: True
+        pos_hint:{"center_x":.5,"center_y":.78}     
+    CRegistro:
+        id:email
+        hint_text: "Correo "
+        helper_text: "Usa tu correo de negocios."  
+        pos_hint:{"center_x":.5,"center_y":.68}     
+    Spinner:
+        id: selec
+        text:"Tipo de Emprendimiento"
+        values:["Gastronomía","Entretenimiento", "Productos para el hogar","Textiles","Artesanias y manualidades","Servicios"]
+        size_hint_y:.08
+        size_hint_x:.58
+        pos_hint:{"center_x":.5,"center_y":.58} 
+    CRegistro:
+        id:info
+        hint_text: "Información"
+        helper_text: "Correo, teléfono y redes sociales..."  
+        multiline: True
+        pos_hint:{"center_x":.5,"center_y":.35}     
+        size_hint_y:.35
+    MDRoundFlatIconButton:
+        icon: "account-plus"
+        text: "Registrarse"
+        pos_hint:{"center_x":.5,"center_y":.1}
+        on_press:
+            app.root.current = "e" if app.validarReg(nombre,passt,email,info,selec) else "r"
+            root.manager.transition.direction = "left"
+<P>:
+    id:pop
+    VPopup:
+        text: "Verifica tus credenciales"
+<R>:
+    id:popup
+    VPopup:
+        text: "Completa los campos y/o usuario no disponible"
